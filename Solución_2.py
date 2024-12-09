@@ -43,10 +43,8 @@ class Pregunta: # Representa una pregunta en el sistema.
     self.encuestados.append(encuestado)
 
   def calcular_promedios(self): # Calcula los promedios de opinión y experticia basados en los encuestados.
-    total_opinion = sum(e.opinion for e in self.encuestados)
-    total_experticia = sum(e.experticia for e in self.encuestados)
-    self.promedio_opinion = round(total_opinion / len(self.encuestados), 2)
-    self.promedio_experticia = round(total_experticia / len(self.encuestados), 2)
+    self.promedio_opinion = round(sum(e.opinion for e in self.encuestados) / len(self.encuestados), 2)
+    self.promedio_experticia = round(sum(e.experticia for e in self.encuestados) / len(self.encuestados), 2)
 
 class Tema: # Representa un tema que contiene preguntas.
   """
@@ -72,11 +70,9 @@ class Tema: # Representa un tema que contiene preguntas.
     self.preguntas.append(pregunta)
 
   def calcular_promedios(self): # Calcula los promedios de opinión, experticia y total de encuestados en el tema.
-    total_opinion = sum(p.promedio_opinion for p in self.preguntas)
-    total_experticia = sum(p.promedio_experticia for p in self.preguntas)
     self.total_encuestados = sum(len(p.encuestados) for p in self.preguntas)
-    self.promedio_opinion = round(total_opinion / len(self.preguntas), 2)
-    self.promedio_experticia = round(total_experticia / len(self.preguntas), 2)
+    self.promedio_opinion = round(sum(p.promedio_opinion for p in self.preguntas) / len(self.preguntas), 2)
+    self.promedio_experticia = round(sum(p.promedio_experticia for p in self.preguntas) / len(self.preguntas), 2)
 
 # Algoritmos de ordenamiento
 
