@@ -74,7 +74,7 @@ class Tema: # Representa un tema que contiene preguntas.
     self.promedio_opinion = round(sum(p.promedio_opinion for p in self.preguntas) / len(self.preguntas), 2)
     self.promedio_experticia = round(sum(p.promedio_experticia for p in self.preguntas) / len(self.preguntas), 2)
 
-# Algoritmos de ordenamiento
+# Algoritmos de ordenamiento y funciones auxiliares
 
 def quick_sort(arr, low, high, key=lambda x: x):
   """
@@ -96,7 +96,7 @@ def quick_sort(arr, low, high, key=lambda x: x):
 
 def particion_quick_sort(arr, low, high, key):
   """
-  Función auxiliar de Quick Sort que particiona el arreglo en torno a un pivote.
+  Función Quick Sort que particiona el arreglo en torno a un pivote.
 
   Parámetros:
     arr (list): Lista de elementos.
@@ -196,7 +196,6 @@ def leer_entrada(archivo):
 
   return encuestados, temas
 
-
 def calcular_metricas(temas, encuestados):
   """
   Calcula las métricas principales basadas en los datos de las preguntas y los encuestados.
@@ -233,7 +232,6 @@ def calcular_metricas(temas, encuestados):
     "promedio_experticia": promedio_experticia,
     "promedio_opinion": promedio_opinion,
   }
-
 
 def escribir_salida(archivo, temas, encuestados, metricas):
   """
