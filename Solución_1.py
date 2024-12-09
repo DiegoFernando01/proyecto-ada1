@@ -87,13 +87,13 @@ class Encuestado: # Representa a un encuestado en el sistema.
     experticia: Nivel de experticia del encuestado.
     opinion: Opinión del encuestado.
   """
-  def __init__(self, id_, nombre, experticia, opinion):
+  def __init__(self, id_, nombre, experticia, opinion): # Constructor de la clase Encuestado.
     self.id = id_
     self.nombre = nombre
     self.experticia = experticia
     self.opinion = opinion
 
-  def __repr__(self): 
+  def __repr__(self): # Representación textual de un objeto Encuestado.
     return f"({self.id}, Nombre: '{self.nombre}', Experticia: {self.experticia}, Opinión: {self.opinion})"
 
 class Pregunta: # Representa una pregunta en el sistema.
@@ -104,7 +104,7 @@ class Pregunta: # Representa una pregunta en el sistema.
     promedio_opinion: Promedio de las opiniones de los encuestados.
     promedio_experticia: Promedio de la experticia de los encuestados.
   """
-  def __init__(self, id_):
+  def __init__(self, id_): # Constructor de la clase Pregunta.
     self.id = id_
     self.encuestados = arbol_binario()
     self.promedio_opinion = 0
@@ -132,7 +132,7 @@ class Tema: # Representa un tema que contiene preguntas.
     promedio_experticia: Promedio de la experticia de las preguntas del tema.
     total_encuestados: Total de encuestados en todas las preguntas del tema.
   """
-  def __init__(self, nombre):
+  def __init__(self, nombre): # Constructor de la clase Tema.
     self.nombre = nombre
     self.preguntas = arbol_binario()
     self.promedio_opinion = 0
@@ -382,7 +382,7 @@ def main(): # Función principal
   escribir_salidas(archivo_salida, temas, encuestados, metricas)
 
   print("\033c", end="")
-  print("\nResultados:\nPrueba ejecutada:", archivo_entrada)
+  print("\nResultados solución #1:\nPrueba ejecutada:", archivo_entrada)
   print("Ejecución exitosa, archivo de texto con la salida:", archivo_salida)
   subprocess.Popen(['notepad', archivo_salida]) # Apertura automática del archivo de salida
 
