@@ -164,3 +164,7 @@ cython_debug/
 # Others
 config.yml
 myenv/
+
+# Carpeta con las entradas generadas por el archivo "generador_entradas.py"
+entradas_generadas/
+tiempos_vs_encuestados.png
