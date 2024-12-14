@@ -1,6 +1,9 @@
 # Librerías necesarias
 
 import subprocess # Se utiliza para abrir el archivo de salidas automatimente tras una ejecución de una entrada.
+import os # Se utiliza para acceder a los archivos de entrada en el sistema
+import time # Se utilzia para el cálculo de tiempos de ejecución
+import matplotlib.pyplot as plt # Se utiliza paara generar los gráficos de comparaciones de tiempos de ejecución vs cantidad de encuestados
 
 # Clases y estructuras de datos utilizadas
 
@@ -272,7 +275,74 @@ def escribir_salida(archivo, temas, encuestados, metricas):
     texto.write(f"  Promedio de experticia de los encuestados: {metricas['promedio_experticia']}\n")
     texto.write(f"  Promedio de opinión de los encuestados: {metricas['promedio_opinion']}\n")
 
-def main(): # Función principal
+def ejecucion_total():
+
+  def procesar_archivo(ruta_archivo):
+    with open(ruta_archivo, 'r', encoding='utf-8'):
+      print(f"\nProcesando archivo: {ruta_archivo}")
+      archivo_salida = "salida_Victoria_Salas_Córdoba_Ramirez.txt"
+
+      encuestados, temas = leer_entrada(ruta_archivo)
+      ordenar_temas(temas)
+      metricas = calcular_metricas(temas, encuestados)
+
+      escribir_salida(archivo_salida, temas, encuestados, metricas)
+
+      print("Resultados de la ejecución usando la solución #1:")
+      print("Ejecución exitosa, archivo de texto con la salida:", archivo_salida)
+
+  carpeta_entradas = "entradas_generadas"  # Ruta de la carpeta con los archivos de entrada
+
+  if not os.path.exists(carpeta_entradas):
+    print(f"La carpeta {carpeta_entradas} no existe.")
+  else:
+    # Iterar sobre los archivos en la carpeta
+    print("\033c", end="")
+    tamanos_archivos = [100, 1000, 10000, 100000]
+    tiempos_ejecucion = []
+    for archivo in os.listdir(carpeta_entradas):
+      if archivo.startswith("entrada_") and archivo.endswith(".txt"):
+        ruta_archivo = os.path.join(carpeta_entradas, archivo)
+        try:
+          inicio_tiempo = time.time()  # Inicia el temporizador
+          procesar_archivo(ruta_archivo)
+          fin_tiempo = time.time()  # Finaliza el temporizador
+          tiempo_ejecucion = fin_tiempo - inicio_tiempo
+          print(f"Tiempo de ejecución fue de: {tiempo_ejecucion} segundos")
+          tiempos_ejecucion.append(tiempo_ejecucion)
+        except Exception as e:
+          print(f"Error procesando el archivo {archivo}: {e}")
+    if tamanos_archivos and tiempos_ejecucion:
+      plt.figure(figsize=(10, 6))
+      plt.plot(tamanos_archivos, tiempos_ejecucion, marker='o', linestyle='-', color='b')
+      plt.title("Tiempos de ejecución vs Cantidad de encuestados")
+      plt.xlabel("Número de encuestados")
+      plt.ylabel("Tiempo de ejecución (segundos)")
+      plt.grid(True)
+      plt.savefig("tiempos_vs_encuestados.png")
+      print("\nEl gráfico de tiempos se ha guardado como 'tiempos_vs_encuestados.png'.")
+
+def ejecucion_individual():
+  # Nombre (si están en el mismo directorio del código) o ruta del archivo de texto con la entrada y la salida incluyendo la extensión .txt
+  # Si no se define un archivo de salida, por defecto se creará uno de nombre "salida_Victoria_Salas_Córdoba_Ramirez.txt"
+  archivo_entrada = "archivos_de_entrada\\entrada_prueba_1.txt"
+  archivo_salida = "salida_Victoria_Salas_Córdoba_Ramirez.txt"
+
+  inicio_tiempo = time.time()  # Inicia el temporizador
+  encuestados, temas = leer_entrada(archivo_entrada)
+  ordenar_temas(temas)
+  metricas = calcular_metricas(temas, encuestados)
+
+  escribir_salida(archivo_salida, temas, encuestados, metricas)
+  fin_tiempo = time.time()  # Finaliza el temporizador
+
+  print("\033c", end="")
+  print("\nResultados solución #1:\nPrueba ejecutada:", archivo_entrada)
+  print(f"Tiempo de ejecución fue de: {fin_tiempo - inicio_tiempo} segundos")
+  print("Ejecución exitosa, archivo de texto con la salida:", archivo_salida)
+  subprocess.Popen(['notepad', archivo_salida]) # Apertura automática del archivo de salida
+
+if __name__ == "__main__": # Método de ejecución
   """
   Parámetros:
     Ninguno.
@@ -280,22 +350,5 @@ def main(): # Función principal
   Retorna:
     None: Ejecuta todo el flujo de trabajo y escribe los resultados en un archivo.
   """
-
-  # Nombre (si están en el mismo directorio del código) o ruta del archivo de texto con la entrada y la salida incluyendo la extensión .txt
-  # Si no se define un archivo de salida, por defecto se creará uno de nombre "salida_Victoria_Salas_Córdoba_Ramirez.txt"
-  archivo_entrada = "archivos_de_entrada\\entrada_prueba_1.txt"
-  archivo_salida = "salida_Victoria_Salas_Córdoba_Ramirez.txt"
-
-  encuestados, temas = leer_entrada(archivo_entrada)
-  ordenar_temas(temas)
-  metricas = calcular_metricas(temas, encuestados)
-
-  escribir_salida(archivo_salida, temas, encuestados, metricas)
-
-  print("\033c", end="")
-  print("\nResultados solución #2:\nPrueba ejecutada:", archivo_entrada)
-  print("Ejecución exitosa, archivo de texto con la salida:", archivo_salida)
-  subprocess.Popen(['notepad', archivo_salida]) # Apertura automática del archivo de salida
-
-if __name__ == "__main__": # Método de ejecución
-  main()
+  #ejecucion_total() # Ejecuta todos los archivos de la carpeta entradas generadas que corresponde a los casos de prueba generados.
+  ejecucion_individual() # Ejecuta el archivo elegido desde la carpeta archivos_de_entrada que corresponde a los casos de prueba brindados.
